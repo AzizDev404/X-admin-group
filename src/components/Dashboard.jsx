@@ -12,6 +12,34 @@ const Dashboard = ({ onLogout }) => {
 
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
+  // Mock data for demo purposes
+  const mockUsers = [
+    {
+      _id: '1',
+      telegram_id: 123456789,
+      full_name: 'Ali Valiyev',
+      class: '10',
+      group: 'A',
+      student_parrent: 'Father',
+      parnet_full_name: 'Vali Aliyev',
+      phone_number: '+998901234567',
+      checked: false,
+      language: 'uz'
+    },
+    {
+      _id: '2',
+      telegram_id: 987654321,
+      full_name: 'Fatima Karimova',
+      class: '9',
+      group: 'B',
+      student_parrent: 'Mother',
+      parnet_full_name: 'Nodira Karimova',
+      phone_number: '+998907654321',
+      checked: true,
+      language: 'ru'
+    }
+  ];
+
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -65,12 +93,11 @@ const Dashboard = ({ onLogout }) => {
     setCheckingUserId(userId);
     
     try {
-     const response = await fetch(`${API_URL}/users/${userId}`, {
-  method: 'PUT', // ✅ endi PUT
-  headers: getAuthHeaders(),
-  body: JSON.stringify({ checked: true })
-});
-
+      const response = await fetch(`${API_URL}/users/${userId}`, {
+        method: 'PUT',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ checked: true })
+      });
 
       if (response.ok) {
         setUsers(prev => prev.map(user => 
@@ -190,7 +217,7 @@ const Dashboard = ({ onLogout }) => {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="flex items-center space-x-2">
           <div className="w-6 h-6 border-2 border-gray-900 border-t-transparent rounded-full animate-spin"></div>
-          <span className="text-gray-700 font-medium">Loading users...</span>
+          <span className="text-gray-700 font-medium">Foydalanuvchilar yuklanmoqda...</span>
         </div>
       </div>
     );
@@ -220,14 +247,14 @@ const Dashboard = ({ onLogout }) => {
                 className="flex items-center px-3 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all duration-200"
               >
                 <FiRefreshCw className="w-4 h-4 mr-2" />
-                Refresh
+                Yangilash
               </button>
               <button
                 onClick={handleLogout}
                 className="flex items-center px-4 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all duration-200"
               >
                 <FiLogOut className="w-4 h-4 mr-2" />
-                Logout
+                Chiqish
               </button>
             </div>
           </div>
@@ -239,125 +266,77 @@ const Dashboard = ({ onLogout }) => {
         <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-200">
             <h2 className="text-lg font-semibold text-blue-500">
-              Users ({users.length})
+              Foydalanuvchilar ({users.length})
             </h2>
           </div>
 
-          {/* Users Table - Desktop */}
-          <div className="hidden md:block overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    ID
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Telegram ID
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Full Name
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Nickname
-                  </th>
-                  <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                    Phone number
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Status
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {users.map((user) => (
-                  <tr 
-                    key={user._id} 
-                    className="hover:bg-gray-50 transition-colors duration-200"
-                  >
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-500">
-                      {user._id}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-500 font-mono">
-                      {user.telegram_id}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-500 font-medium">
-                      {user.full_name}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-500">
-                      {user.nickname}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-500">
-                      {user.phone_number}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                        user.checked 
-                          ? 'bg-green-100 text-green-800' 
-                          : 'bg-yellow-100 text-yellow-800'
-                      }`}>
-                        {user.checked ? 'Checked' : 'Pending'}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {renderActionButtons(user)}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Users Cards - Mobile */}
-          <div className="md:hidden divide-y divide-gray-200">
+          {/* Users Cards - Mobile-like Design for all screens */}
+          <div className="divide-y divide-gray-200">
             {users.map((user, index) => (
-              <div key={user._id} className="p-4 hover:bg-gray-50 transition-colors duration-200">
-                <div className="space-y-3">
-                  {/* User Name & Nickname */}
+              <div key={user._id} className="p-6 transition-colors duration-200">
+                <div className="space-y-4">
+                  {/* Header: Name, Status and Actions */}
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold text-gray-900">{user.full_name}</h3>
+                      <p className="text-sm text-gray-500">ID: {user._id}</p>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
                         user.checked 
                           ? 'bg-green-100 text-green-800' 
                           : 'bg-yellow-100 text-yellow-800'
                       }`}>
-                        {user.checked ? 'Checked' : 'Pending'}
+                        {user.checked ? 'Tasdiqlangan' : 'Kutilmoqda'}
                       </span>
                       {renderActionButtons(user)}
                     </div>
                   </div>
                   
-                  {/* User Details */}
-                  <div className="space-y-2">
-                    <div className="flex justify-between">
-                      <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">ID:</span>
-                      <span className="text-xs text-gray-900 font-mono break-all">{user._id}</span>
+                  {/* User Details Grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div className="bg-gray-50 p-3 rounded-lg">
+                      <span className="text-xs font-medium text-gray-500 uppercase tracking-wider block mb-1">Telegram ID</span>
+                      <span className="text-sm text-gray-900 font-mono">{user.telegram_id}</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">Full Name:</span>
-                      <span className="text-xs text-gray-700">{user.full_name}</span>
+                    
+                    <div className="bg-gray-50 p-3 rounded-lg">
+                      <span className="text-xs font-medium text-gray-500 uppercase tracking-wider block mb-1">Sinf</span>
+                      <span className="text-sm text-gray-900">{user.class || 'Belgilanmagan'}</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">Nickname:</span>
-                      <span className="text-xs text-gray-700">{user.nickname}</span>
+                    
+                    <div className="bg-gray-50 p-3 rounded-lg">
+                      <span className="text-xs font-medium text-gray-500 uppercase tracking-wider block mb-1">Guruh</span>
+                      <span className="text-sm text-gray-900">{user.group || 'Belgilanmagan'}</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">Phone:</span>
-                      <span className="text-xs text-gray-700">{user.phone_number}</span>
+                    
+                    <div className="bg-gray-50 p-3 rounded-lg">
+                      <span className="text-xs font-medium text-gray-500 uppercase tracking-wider block mb-1">Ota/Ona</span>
+                      <span className="text-sm text-gray-900">
+                        {user.student_parrent === 'Father' ? 'Ota' : 
+                         user.student_parrent === 'Mother' ? 'Ona' : 
+                         'Belgilanmagan'}
+                      </span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">Telegram ID:</span>
-                      <span className="text-xs text-gray-700 font-mono">{user.telegram_id}</span>
+                    
+                    <div className="bg-gray-50 p-3 rounded-lg">
+                      <span className="text-xs font-medium text-gray-500 uppercase tracking-wider block mb-1">Ota/Ona ismi</span>
+                      <span className="text-sm text-gray-900">{user.parnet_full_name || 'Belgilanmagan'}</span>
+                    </div>
+                    
+                    <div className="bg-gray-50 p-3 rounded-lg">
+                      <span className="text-xs font-medium text-gray-500 uppercase tracking-wider block mb-1">Telefon raqam</span>
+                      <span className="text-sm text-gray-900">{user.phone_number || 'Belgilanmagan'}</span>
+                    </div>
+                    
+                    <div className="bg-gray-50 p-3 rounded-lg">
+                      <span className="text-xs font-medium text-gray-500 uppercase tracking-wider block mb-1">Til</span>
+                      <span className="text-sm text-gray-900">
+                        {user.language === 'uz' ? "O'zbek" : user.language === 'ru' ? 'Rus' : 'Belgilanmagan'}
+                      </span>
                     </div>
                   </div>
                 </div>
-                
-                {/* Separator line for all except last item */}
-                {index !== users.length - 1 && (
-                  <hr className="mt-4 border-gray-200" />
-                )}
               </div>
             ))}
           </div>
@@ -366,8 +345,8 @@ const Dashboard = ({ onLogout }) => {
           {users.length === 0 && !isLoading && (
             <div className="text-center py-12">
               <FiUsers className="w-12 h-12 text-blue-500 mx-auto mb-4" />
-              <p className="text-blue-500 text-lg">No users found</p>
-              <p className="text-gray-400 text-sm mt-2">Users will appear here when available</p>
+              <p className="text-blue-500 text-lg">Foydalanuvchilar topilmadi</p>
+              <p className="text-gray-400 text-sm mt-2">Foydalanuvchilar mavjud bo'lganda bu yerda ko'rinadi</p>
             </div>
           )}
         </div>
