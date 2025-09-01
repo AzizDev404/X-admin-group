@@ -317,10 +317,6 @@ const Dashboard = ({ onLogout }) => {
                 <div className="space-y-3">
                   {/* User Name & Nickname */}
                   <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className="text-sm font-medium text-gray-900">{user.full_name}</h3>
-                      <p className="text-sm text-gray-600">{user.nickname}</p>
-                    </div>
                     <div className="flex items-center space-x-2">
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                         user.checked 
@@ -338,6 +334,18 @@ const Dashboard = ({ onLogout }) => {
                     <div className="flex justify-between">
                       <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">ID:</span>
                       <span className="text-xs text-gray-900 font-mono break-all">{user._id}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">Full Name:</span>
+                      <span className="text-xs text-gray-700">{user.full_name}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">Nickname:</span>
+                      <span className="text-xs text-gray-700">{user.nickname}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">Phone:</span>
+                      <span className="text-xs text-gray-700">{user.phone_number}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">Telegram ID:</span>
