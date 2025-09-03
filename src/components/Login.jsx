@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FiUser, FiLock, FiEye, FiEyeOff, FiUsers } from 'react-icons/fi';
+import logo from '../assets/usat.png';
 
 const Alert = ({ type, message, onClose }) => {
   if (!message) return null;
@@ -100,18 +101,21 @@ const Login = ({ onLogin }) => {
           <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-500"></div>
           
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full mb-6 shadow-xl border-4 border-white">
-              <FiUsers className="w-10 h-10 text-white" />
-            </div>
-            <h1 className="text-3xl font-bold text-black mb-2">Admin Panel</h1>
-            <p className="text-black opacity-75">Davom etish uchun ma'lumotlaringizni kiriting</p>
+                <div>
+                            <img
+                              src={logo}
+                              alt="Workflow"
+                              className="h-14 w-auto mx-auto"
+                            />
+                          </div>
+                          <br />
           </div>
 
           <div className="space-y-6">
             {/* Username Input */}
             <div className="space-y-2">
               <label className="block text-sm font-bold text-black">
-                Foydalanuvchi nomi
+                Login
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
